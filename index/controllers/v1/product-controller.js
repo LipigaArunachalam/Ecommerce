@@ -3,6 +3,7 @@ const {Product} = require("../../models");
 exports.addproduct = async(req, res) =>{
      try{
         const result = await Product.create(req.body);
+        const upd = await Product.updateOne({_id : result._id},{$set:{is_deleted : false}});
         res.json(result);
      }
      catch(err){
@@ -12,7 +13,7 @@ exports.addproduct = async(req, res) =>{
 
 exports.getproduct = async(req, res) =>{
      try{
-          const result = await Product.find({product_category_name :req.body.product_category_name});
+          const result = await Product.find({product_category_name :req.body.product_category_name, is_deleted : false});
           const count = await Product.countDocuments({product_category_name :req.body.product_category_name});
           if(result.length===0){
                res.json({message :"not found invalid"});
@@ -26,8 +27,11 @@ exports.getproduct = async(req, res) =>{
 
 exports.updproduct = async(req, res)=>{
      try{
-         const result = await Product.findOneAndUpdate({ product_id : req.body.product_id} , 
+         const result = await Product.findOneAndUpdate({ product_id : req.body.product_id, is_deleted : false} , 
           {product_photos_qty : req.body.product_photos_qty}, {returnDocument : "after"});
+          if(result.length === 0){
+               res.status(404).json({message:"not found"});
+          }
          res.status(200).json({message : "done updating"});
      }catch(err){
           res.status(500).json({error : err.message});

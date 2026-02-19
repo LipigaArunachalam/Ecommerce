@@ -8,6 +8,7 @@ exports.register = async(req, res)=>{
        const{username , password , role } = req.body;
        const hashedp = await bcrypt.hash(password, 10);
        const register = await User.create({username, password : hashedp, role});
+       const upd = await User.updateOne({_id : register._id},{$set:{is_deleted : false}});
        res.status(200).json({message: "user created"});
    } catch(err){
        res.status(500).json({error : err.message});
