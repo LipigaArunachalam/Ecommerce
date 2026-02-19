@@ -4,7 +4,7 @@ const auth = require("../../middleware/auth");
 
 const { customerController } = require("../../controllers/v1");
 
-router.get("/custcount",auth, customerController.custcount);
+router.get("/custcount",auth(["user", "admin"]), customerController.custcount);
 
 
 module.exports = router;
