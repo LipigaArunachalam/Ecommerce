@@ -14,7 +14,7 @@ exports.addproduct = async(req, res) =>{
 exports.getproduct = async(req, res) =>{
      try{
           const result = await Product.find({product_category_name :req.body.product_category_name, is_deleted : false});
-          const count = await Product.countDocuments({product_category_name :req.body.product_category_name});
+          const count = await Product.countDocuments({product_category_name :req.body.product_category_name, is_deleted: false});
           if(result.length===0){
                res.json({message :"not found invalid"});
           }
