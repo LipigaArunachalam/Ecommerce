@@ -10,6 +10,6 @@ router.get("/get-product",auth(["user", "admin"]), productController.getproduct)
 
 router.put("/upd-product", auth(["admin"]),productController.updproduct);
 
-router.delete("/del-product",auth([ "admin"]), productController.delproduct);
+router.put("/del-product",auth([ "admin"]), productController.delproduct);
 
 module.exports = router;

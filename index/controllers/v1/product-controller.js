@@ -36,7 +36,7 @@ exports.updproduct = async(req, res)=>{
 
 exports.delproduct = async(req,res) =>{
      try{
-          const result = await Product.deleteMany({product_photos_qty : {$gt : 19}});
+          const result = await Product.updateMany({product_photos_qty : {$gt : 17}},{$set : {is_deleted : true}}, {returnDocument : "after"});
           if(!result){
                res.status(404).json({message : "nothing found"});
           }else{

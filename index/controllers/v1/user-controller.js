@@ -22,7 +22,7 @@ exports.login = async(req,res)=>{
         }else{
             const result = await bcrypt.compare(req.body.password, found.password);
             if(result){
-                const token = jwt.sign({id : found._id ,role : found.role}, process.env.SECRETKEY, {expiresIn : "1h"});
+                const token = jwt.sign({id : found._id ,role : found.role}, process.env.SECRETKEY, {expiresIn : "5h"});
                 res.status(200).json({message : "token created successfully", token :token});
             }
             res.status(401).json({message : "incorrect password"});

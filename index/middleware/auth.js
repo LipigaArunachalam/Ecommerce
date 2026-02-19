@@ -36,7 +36,6 @@ module.exports = (roles = []) =>{
            if(roles.length === 0 || !roles.includes(role)){
               return res.json({message: "denied access"});
            }
-           console.log(role);
            next();
         }catch(err){
              res.status(500).json({error : err.message});

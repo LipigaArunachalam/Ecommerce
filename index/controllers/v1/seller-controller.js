@@ -36,7 +36,7 @@ exports.updseller = async(req, res)=>{
 
 exports.delseller = async(req, res)=>{
    try{
-      const result = await Seller.deleteOne({seller_zip_code_prefix : Number(req.body.seller_zip_code_prefix)});
+      const result = await Seller.updateOne({seller_zip_code_prefix : Number(req.body.seller_zip_code_prefix)},{is_deleted : true});
       if(!result){
         res.json({message : "zip code not found"});
       }else{
