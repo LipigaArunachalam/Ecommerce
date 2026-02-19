@@ -1,11 +1,12 @@
 const {payments} = require('../../models/index');
 
 const paymentController ={
-    getAllPayment: async (req, res) => {
+    
+    getAllPaymentByPage: async (req, res) => {
         try{
-            const payment = await payments.find();
+            const paymentList = await payments.find({isDeleted: false});
             res.status(200).json({
-                payment: payment
+                payment: paymentList
             })
         }catch(error){
             res.status(400).json({
@@ -28,9 +29,11 @@ const paymentController ={
             })
         }
     },
+
+
     getPayment: async (req, res) => {
         try {
-            const payment = await payments.findById(req.params.id);
+            const payment = await payments.findOne({_id: req.params.id, isDeleted: false});
             if(!payment){
                 return res.status(400).json({
                     message: "payment not found"
@@ -45,10 +48,11 @@ const paymentController ={
             })
         }
     },
+
     updatePayment: async (req, res) => {
         try {
-            const payment = await payments.findByIdAndUpdate(
-                req.params.id,
+            const payment = await payments.findOneAndUpdate(
+                {_id: req.params.id, isDeleted: false},
                 req.body,
                 {returnDocument:'after'}
             )
@@ -67,11 +71,12 @@ const paymentController ={
             })
         }
     },
+
     deletePayment: async (req, res) => {
         try {
-            const payment = await payments.findByIdAndDelete(
-                req.params.id,
-                req.body,
+            const payment = await payments.findOneAndUpdate(
+                {_id: req.params.id, isDeleted: false},
+                {isDeleted: true},
                 {returnDocument:'after'}
             )
             if(!payment){
@@ -80,7 +85,8 @@ const paymentController ={
                 })
             }
             res.status(200).json({
-                message: "payment deleted"
+                message: "payment deleted successfully",
+                payment: payment
             })
         }catch(error) {
             res.status(400).json({

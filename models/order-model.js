@@ -8,7 +8,11 @@ const orders_schema = new mongoose.Schema({
     order_approved_at: String,
     order_delivered_carrier_date: String,
     order_delivered_customer_date: String,
-    order_estimated_delivery_date: String
+    order_estimated_delivery_date: String,
+    is_deleted: {
+        type: Boolean,
+        default: false
+    }
 },{
     collection:'orders'
 });

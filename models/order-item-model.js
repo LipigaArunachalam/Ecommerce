@@ -7,9 +7,13 @@ const order_item_schema = new mongoose.Schema({
     seller_id: String,
     shipping_limit_date: String,
     price: Number,
-    freight_value: Number
+    freight_value: Number,
+    is_deleted:{
+        type: Boolean,
+        default: false
+    }
 },{
-    collection: "order_items"
+    collection: "order-items"
 });
 
 module.exports = mongoose.model('order-item', order_item_schema);
