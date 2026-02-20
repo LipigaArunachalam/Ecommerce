@@ -37,7 +37,18 @@ const orderItemController ={
             })  
         }
     },
-
+    getAllOrderItems: async (req,res) => {
+        try{
+            const orderItemList = await OrderItem.find({is_deleted: false});
+            res.status(200).json({
+                orderItemList: orderItemList
+            })
+        }catch(error){
+            res.status(400).json({
+                message: error.message
+            })  
+        }
+    },
     getOrderItem: async (req,res) => {
         try{
             const orderItem = await OrderItem.findOne({_id: new ObjectId(req.params.id), is_deleted: false});
@@ -98,6 +109,22 @@ const orderItemController ={
             res.status(400).json({
                 message: error.mesaage
             })
+        }
+    },
+    searchOrderItem: async (req, res) => {
+        try{
+            const {min, max} = req.params;
+            const orderItemList = await OrderItem.find({
+                price: {$gte: min, $lte: max},
+                is_deleted: false 
+            });
+            res.status(200).json({
+                orderItemList: orderItemList
+            })  
+        } catch(error){
+            res.status(400).json({
+                message: error.message
+            })  
         }
     }
 

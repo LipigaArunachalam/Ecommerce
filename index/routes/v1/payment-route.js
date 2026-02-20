@@ -7,7 +7,11 @@ paymentRouter.post('/create-payment', auth(['admin']), paymentController.createP
 
 paymentRouter.get('/', auth(['admin','user']), paymentController.getAllPaymentByPage);
 
+paymentRouter.get('/get-all-payment', auth(['admin']), paymentController.getAllPayment);
+
 paymentRouter.get('/:id', auth(['admin', 'user']), paymentController.getPayment);
+
+paymentRouter.get('/search/:type', auth(['admin', 'user']), paymentController.searchPayment);
 
 paymentRouter.patch('/update-payment/:id', auth(['admin']), paymentController.updatePayment);
 
