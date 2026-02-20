@@ -1,21 +1,18 @@
-const mongoose = require('mongoose');
-const express = require('express');
+const express = require("express");
+const mongoose = require("mongoose"); 
 const app = express();
-const routes = require('./routes');
-require('dotenv').config();
-
 app.use(express.json());
+require("dotenv").config({ path: "../.env" });
+const MONGODB = process.env.MONGODB;
 
-app.use('/api', routes);
+mongoose.connect(MONGODB)
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.log(err));
 
-mongoose.connect(process.env.MONGO_URL)
-.then(() => {
-    console.log("database connected successfully");
-})
-.catch((error) => {
-    console.log(error.message);
-})
 
-app.listen(3000,() =>{
-    console.log("server running on the port 3000");
-} )
+const routes = require("./routes");
+app.use("/api", routes);
+
+app.listen(5000, (req,res)=>{
+    console.log("server running in 5000...")
+});
