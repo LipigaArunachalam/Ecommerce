@@ -4,6 +4,7 @@ const user_schema = mongoose.Schema({
     username : String,
     password : String,
     role : {type : String, required : true},
+    refresh_token: String,
     is_deleted : {type : Boolean, default : false}
 }, {collection : "users"});
 
