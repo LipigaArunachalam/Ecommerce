@@ -1,15 +1,16 @@
 const express = require('express');
 const paymentRouter = express.Router();
-const {paymentController} = require('../../controllers/v1/index');
+const {paymentController} = require('../../controllers/v1');
+const auth = require('../../middleware/auth');
 
-paymentRouter.post('/create-payment', paymentController.createPayment);
+paymentRouter.post('/create-payment', auth(['admin']), paymentController.createPayment);
 
-paymentRouter.get('/', paymentController.getAllPaymentByPage);
+paymentRouter.get('/', auth(['admin','user']), paymentController.getAllPaymentByPage);
 
-paymentRouter.get('/:id', paymentController.getPayment);
+paymentRouter.get('/:id', auth(['admin', 'user']), paymentController.getPayment);
 
-paymentRouter.patch('/update-payment/:id', paymentController.updatePayment);
+paymentRouter.patch('/update-payment/:id', auth(['admin']), paymentController.updatePayment);
 
-paymentRouter.put('/delete-payment/:id', paymentController.deletePayment);
+paymentRouter.put('/delete-payment/:id', auth(['admin']), paymentController.deletePayment);
 
 module.exports = paymentRouter;

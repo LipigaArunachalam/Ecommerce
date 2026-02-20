@@ -1,11 +1,12 @@
-const {orderItems} = require('../../models/index');
-
+const {OrderItem} = require('../../models/index');
+const { ObjectId } =  require('mongodb');
 const orderItemController ={
     
     createOrderItem: async (req,res) => {
         try{
         const payload = req.body;
-        const orderItem = await orderItems.create(payload);
+        console.log(payload);
+        const orderItem = await OrderItem.create(payload);
         res.status(200).json({
             message: "order items created",
             orderItem: orderItem
@@ -22,8 +23,8 @@ const orderItemController ={
             const  page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
             const skip = (page - 1) * limit;
-            const orderItemList = await orderItems.find({isDeleted: false}).skip(skip).limit(limit);
-            const totalOrderItems = await orderItems.countDocuments();
+            const orderItemList = await OrderItem.find({is_deleted: false}).skip(skip).limit(limit);
+            const totalOrderItems = await OrderItem.countDocuments();
             res.status(200).json({
                 orderItemList: orderItemList,
                 totalOrderItems: totalOrderItems,
@@ -39,7 +40,7 @@ const orderItemController ={
 
     getOrderItem: async (req,res) => {
         try{
-            const orderItem = await orderItems.findOne({_id: req.params.id, isDeleted: false});
+            const orderItem = await OrderItem.findOne({_id: new ObjectId(req.params.id), is_deleted: false});
             if(!orderItem){
                 return res.status(400).json({
                     message: "order items not found"
@@ -57,8 +58,8 @@ const orderItemController ={
     updateOrderItem: async (req, res) => {
         try{
             const payload = req.body;
-            const orderItem = await orderItems.findOneAndUpdate(
-                {_id: req.params.id, isDeleted: false},
+            const orderItem = await OrderItem.findOneAndUpdate(
+                {_id: new ObjectId(req.params.id), is_deleted: false},
                 payload,
                 {returnDocument: 'after'}
             );
@@ -79,9 +80,9 @@ const orderItemController ={
     },
     deleteOrderItem: async (req, res) => {
         try{
-            const orderItem = await orderItems.findOneAndUpdate(
-                {_id: req.params.id, isDeleted: false},
-                {isDeleted: true},
+            const orderItem = await OrderItem.findOneAndUpdate(
+                {_id: new ObjectId(req.params.id), is_deleted: false},
+                {is_deleted: true},
                 {returnDocument:'after'}
             );
             if(!orderItem){

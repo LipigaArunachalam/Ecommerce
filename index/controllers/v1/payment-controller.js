@@ -1,4 +1,5 @@
-const {payments} = require('../../models/index');
+const {Payment} = require('../../models/index');
+const { ObjectId } =  require('mongodb');
 
 const paymentController ={
     
@@ -6,9 +7,9 @@ const paymentController ={
         try{
             const page = parseInt(req.query.page) || 1;
             const limit = parseInt(req.query.limit) || 10;
-            const skip  = page -1 * limit;
-            const paymentList = await payments.find({isDeleted: false}).skip(skip).limit(limit);
-            const totalPayments = await payments.countDocuments();
+            const skip  = (page -1) * limit;
+            const paymentList = await Payment.find({is_deleted: false}).skip(skip).limit(limit);
+            const totalPayments = await Payment.countDocuments();
             const totalPages = Math.ceil(totalPayments / limit);
             res.status(200).json({
                 paymentList: paymentList,
@@ -26,7 +27,7 @@ const paymentController ={
     createPayment: async (req, res) => {
         try {
             const payload = req.body;
-            const payment = await payments.create(payload);
+            const payment = await Payment.create(payload);
             res.status(200).json({
                 message: "payment created",
                 payment: payment
@@ -41,7 +42,7 @@ const paymentController ={
 
     getPayment: async (req, res) => {
         try {
-            const payment = await payments.findOne({_id: req.params.id, isDeleted: false});
+            const payment = await Payment.findOne({_id: new ObjectId(req.params.id), is_deleted: false});
             if(!payment){
                 return res.status(400).json({
                     message: "payment not found"
@@ -59,8 +60,8 @@ const paymentController ={
 
     updatePayment: async (req, res) => {
         try {
-            const payment = await payments.findOneAndUpdate(
-                {_id: req.params.id, isDeleted: false},
+            const payment = await Payment.findOneAndUpdate(
+                {_id: new ObjectId(req.params.id), is_deleted: false},
                 req.body,
                 {returnDocument:'after'}
             )
@@ -82,9 +83,9 @@ const paymentController ={
 
     deletePayment: async (req, res) => {
         try {
-            const payment = await payments.findOneAndUpdate(
-                {_id: req.params.id, isDeleted: false},
-                {isDeleted: true},
+            const payment = await Payment.findOneAndUpdate(
+                {_id: new ObjectId(req.params.id), is_deleted: false},
+                {is_deleted: true},
                 {returnDocument:'after'}
             )
             if(!payment){

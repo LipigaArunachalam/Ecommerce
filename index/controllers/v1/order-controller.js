@@ -1,4 +1,5 @@
-const {orders} = require('../../models/index');
+const {Order} = require('../../models/index');
+const  { ObjectId } =  require('mongodb');
 
 const orderController = {
     
@@ -10,9 +11,9 @@ const orderController = {
 
             const skip = (page - 1) * limit;
 
-            const orderList = await orders.find({isDeleted: false}).skip(skip).limit(limit);
+            const orderList = await Order.find({is_deleted: false}).skip(skip).limit(limit);
 
-            const totalOrders = await orders.countDocuments();
+            const totalOrders = await Order.countDocuments({is_deleted: false});
             const totalPages = Math.ceil(totalOrders / limit);
             res.status(200).json({
                 orders: orderList,
@@ -29,9 +30,10 @@ const orderController = {
     createOrder: async (req, res) => {
         try{
             const payload = req.body;
-            const order = await orders.create(payload);
+            const order = await Order.create(payload);
             res.status(200).json({
                     message: "order successfull",
+                    order: order
             })
         }catch(error){
             res.status(400).json({
@@ -42,10 +44,10 @@ const orderController = {
     },
     getOrder: async (req, res) => {
         try{
-            const order = await orders.findOne({_id: req.params.id, isDeleted: false});
+            const order = await Order.findOne({_id: new ObjectId(req.params.id), is_deleted: false});
             if(!order){
                 return res.status(400).json({
-                    message: "order not found"
+                    message: "get order not found"
                 })
             }
             res.status(200).json({
@@ -59,14 +61,14 @@ const orderController = {
     },
     updateOrder: async (req, res) => {
         try{
-            const order = await orders.findOneAndUpdate(
-                {_id: req.params.id, isDeleted: false},
+            const order = await Order.findOneAndUpdate(
+                {_id: new ObjectId(req.params.id), is_deleted: false},
                 req.body,
                 {returnDocument: 'after'}
             );
             if(!order){
                 return res.status(400).json({
-                    message: "order not found"
+                    message: "update order not found"
                 })
             }
             res.status(200).json({
@@ -81,14 +83,14 @@ const orderController = {
     },
     deleteOrder: async (req,res) => {
         try{
-            const order = await orders.findOneAndUpdate(
-                {_id: req.params.id, isDeleted: false},
-                {isDeleted: true},
+            const order = await Order.findOneAndUpdate(
+                {_id: new ObjectId(req.params.id), is_deleted: false},
+                {is_deleted: true},
                 {returnDocument:'after'}
             );
             if(!order) {
                 return res.status(400).json({
-                    message: "order not found"
+                    message: "delete order not found"
                 })
             }
             res.status(200).json({

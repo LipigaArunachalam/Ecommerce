@@ -1,6 +1,6 @@
 const {User} = require("../models");
 const jwt = require("jsonwebtoken");
-require("dotenv").config({path : "../../.env"});
+require("dotenv").config({path : "../.env"});
 
 // module.exports = async(req, res, next) =>{
 //     try{

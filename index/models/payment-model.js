@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const payments_schema= new mongoose.Schema({
+const payment_schema= new mongoose.Schema({
     order_id: String,
     payment_sequential: Number,
     payment_type: String,
@@ -14,4 +14,4 @@ const payments_schema= new mongoose.Schema({
     collection:"payments"
 });
 
-module.exports = mongoose.model('payment', payments_schema);
+module.exports = mongoose.model('payment', payment_schema);
