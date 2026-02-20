@@ -5,7 +5,7 @@ const user_schema = mongoose.Schema({
     password : String,
     role : {type : String, required : true},
     refresh_token: String,
-    is_deleted : {type : Boolean, default : false}
+    is_deleted : {type : Boolean, default : false, select : false}
 }, {collection : "users"});
 
 module.exports = mongoose.model("user", user_schema);
