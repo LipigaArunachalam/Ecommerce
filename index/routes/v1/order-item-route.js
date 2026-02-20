@@ -7,7 +7,11 @@ orderItemRouter.post('/create-order-item', auth(['admin']), orderItemController.
 
 orderItemRouter.get('/', auth(['admin','user']), orderItemController.getAllOrderItemsByPage);
 
+orderItemRouter.get('/get-all-order-item', auth(['admin']), orderItemController.getAllOrderItems);
+
 orderItemRouter.get('/:id', auth(['admin', 'user']), orderItemController.getOrderItem);
+
+orderItemRouter.get('/search/:max/:min', auth(['admin', 'user']), orderItemController.searchOrderItem);
 
 orderItemRouter.patch('/update-order-item/:id', auth(['admin']), orderItemController.updateOrderItem);
 

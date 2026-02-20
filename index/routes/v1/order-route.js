@@ -7,7 +7,11 @@ orderRouter.post('/create-order',auth(['admin']), orderController.createOrder);
 
 orderRouter.get('/',auth(['admin','user']), orderController.getAllOrdersByPage);
 
+orderRouter.get('/get-all-order', auth(['admin']), orderController.getAllOrders);
+
 orderRouter.get('/:id', auth(['admin', 'user']), orderController.getOrder);
+
+orderRouter.get('/search/:status', auth(['admin', 'user']), orderController.searchOrder);
 
 orderRouter.patch('/update-order/:id', auth(['admin']), orderController.updateOrder);
 

@@ -42,6 +42,19 @@ const orderController = {
             })
         }
     },
+    getAllOrders: async (req,res) => {
+        try{
+            const orderList = await Order.find({is_deleted : false});
+            res.status(200).json({
+                orderList: orderList
+            })
+        }catch(error){
+            res.status(400).json({
+                message: error.message
+            })
+        }
+    },
+
     getOrder: async (req, res) => {
         try{
             const order = await Order.findOne({_id: new ObjectId(req.params.id), is_deleted: false});
@@ -98,6 +111,23 @@ const orderController = {
                 order: order
             })
         }catch(error) {
+            res.status(400).json({
+                message: error.message
+            })
+        }
+    },
+    searchOrder: async(req,res) => {
+        try{
+            const key = req.params.status;
+            const result = await Order.find({
+                order_status : {$regex : `^${key}$` , $options : "i"},
+                is_deleted : false}).limit(100);
+            res.status(200).json({
+                message : "all the data", 
+                result : result
+            });
+        }
+        catch(error){
             res.status(400).json({
                 message: error.message
             })

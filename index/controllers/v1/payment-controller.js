@@ -39,6 +39,18 @@ const paymentController ={
         }
     },
 
+    getAllPayment: async (req, res) => {
+        try {
+            const paymentList = await Payment.find({is_deleted: false});        
+            res.status(200).json({
+                paymentList: paymentList
+            })
+        }   catch(error) {
+            res.status(400).json({
+                message: error.message
+            })
+        }
+    },
 
     getPayment: async (req, res) => {
         try {
@@ -102,7 +114,24 @@ const paymentController ={
                 message: error.message
             })
         }
+    },
+    searchPayment: async (req, res) => {
+        try {
+            const key = req.params.type;
+            const result = await Payment.find({
+                payment_type : {$regex : `^${key}$` , $options : "i"},
+                is_deleted : false}).limit(100);
+            res.status(200).json({
+                message : "all the data", 
+                result : result
+            });
+        }catch(error) {
+            res.status(400).json({
+                message: error.message
+            })
+        }
     }
+
 };
 
 module.exports = paymentController;
