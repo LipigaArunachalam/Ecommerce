@@ -23,7 +23,7 @@ exports.login = async(req,res)=>{
         }else{
             const result = await bcrypt.compare(req.body.password, found.password);
             if(result){
-                const token = jwt.sign({id : found._id ,role : found.role}, process.env.SECRETKEY, {expiresIn : "2m"});
+                const token = jwt.sign({id : found._id ,role : found.role}, process.env.SECRETKEY, {expiresIn : "1m"});
                 const reftoken = jwt.sign({id : found._id}, process.env.REFRESH_SECRET, {expiresIn:"7d"});
                 found.refresh_token = reftoken;
                 await found.save();

@@ -13,7 +13,7 @@ exports.addproduct = async(req, res) =>{
 
 exports.getproduct = async(req, res) =>{
      try{
-          const result = await Product.find({product_category_name :req.body.product_category_name, is_deleted : false});
+          const result = await Product.find({product_category_name :req.body.product_category_name, is_deleted : false}).select("-_id");
           const count = await Product.countDocuments({product_category_name :req.body.product_category_name, is_deleted: false});
           if(result.length===0){
                res.json({message :"not found invalid"});
@@ -49,4 +49,23 @@ exports.delproduct = async(req,res) =>{
      } catch(err){
           res.status(500).json({error : err.message});
      }
-}
+};
+
+exports.getall = async(req, res)=>{
+    try{
+        const result = await Product.find({is_deleted : false},{_id : 0}).limit(100);
+        res.status(200).json({message : "all the data", result : result});
+    }catch(err){
+        res.status(500).json({error : err.message});
+    }
+};
+
+exports.search = async(req, res)=>{
+    try{
+        const key = req.params.name;
+        const result = await Product.find({product_category_name : {$regex : key , $options : "i"} , is_deleted : false}).limit(100);
+        res.status(200).json({message : "all the data", result : result});
+    }catch(err){
+        res.status(500).json({error : err.message});
+    }
+};

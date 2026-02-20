@@ -12,4 +12,8 @@ router.put("/upd-seller", auth(["admin"]), sellerController.updseller);
 
 router.put("/del-seller", auth(["admin"]), sellerController.delseller);
 
+router.get("/get-all",auth(["user", "admin"]),sellerController.getall);
+
+router.get("/search/:name",auth(["user", "admin"]),sellerController.search);
+
 module.exports = router;
