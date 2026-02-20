@@ -10,7 +10,7 @@ product_weight_g: Number,
 product_length_cm : Number,
 product_height_cm : Number,
 product_width_cm : Number,
-is_deleted : {type : Boolean, default : false}
+is_deleted : {type : Boolean, default : false, select : false}
 }, {collection : "products"});
 
 module.exports = mongoose.model("product", product_schema);
