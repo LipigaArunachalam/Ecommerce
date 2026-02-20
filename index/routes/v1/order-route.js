@@ -6,8 +6,6 @@ orderRouter.post('/create-order', orderController.createOrder);
 
 orderRouter.get('/', orderController.getAllOrdersByPage);
 
-orderRouter.get('/update-all-order', orderController.deleteAllOrder);
-
 orderRouter.get('/:id', orderController.getOrder);
 
 orderRouter.patch('/update-order/:id', orderController.updateOrder);

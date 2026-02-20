@@ -6,8 +6,6 @@ paymentRouter.post('/create-payment', paymentController.createPayment);
 
 paymentRouter.get('/', paymentController.getAllPaymentByPage);
 
-paymentRouter.get('/update-all-payment', paymentController.deleteAllpayment);
-
 paymentRouter.get('/:id', paymentController.getPayment);
 
 paymentRouter.patch('/update-payment/:id', paymentController.updatePayment);

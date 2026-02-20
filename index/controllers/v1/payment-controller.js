@@ -4,14 +4,22 @@ const paymentController ={
     
     getAllPaymentByPage: async (req, res) => {
         try{
-            const paymentList = await payments.find({isDeleted: false});
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+            const skip  = page -1 * limit;
+            const paymentList = await payments.find({isDeleted: false}).skip(skip).limit(limit);
+            const totalPayments = await payments.countDocuments();
+            const totalPages = Math.ceil(totalPayments / limit);
             res.status(200).json({
-                payment: paymentList
+                paymentList: paymentList,
+                totalPayments: totalPayments,
+                totalPages: totalPages,
+                currentPage: page
             })
         }catch(error){
             res.status(400).json({
                 message: error.message
-            })
+            })   
         }
     },
 
